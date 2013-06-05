@@ -1,0 +1,35 @@
+<html>
+<head>
+  <title>Erlang Performance Lab 3D</title>
+
+  <script src="ve/js/jquery-2.0.0.js"></script>
+
+  <script src="ve/js/Three.js"></script>
+  <script src="ve/js/TrackballControls.js"></script>
+  <script src="ve/js/effects/AnaglyphEffect.js"></script>
+  <script src="ve/js/effects/GrayAnaglyphEffect.js"></script>
+
+  <script src="ve/js/Graph.js"></script>
+  <script src="ve/js/force-directed-layout.js"></script>
+
+  <script src="ve/js/VisualEyes.js"></script>
+
+  <!-- Erlang Performance Lab plugin-->
+  <script src="epl_3d.js"></script>
+
+</head>
+<body>
+  <p id="text">&nbsp;</p>
+  <div id="main" style="width: 100%; background-color: lightgray;">
+    <div id="container" style="width: 100%; height: 100%;"></div>
+    <button id="addNode">Add Node</button>
+    <button onmousedown="VE.changeEffect()">Change render effect</button>
+
+    <p>Message: <span id="message">N/A</span></p>
+    <p>Spawn: <span id="spawn">N/A</span></p>
+    <p>Exit: <span id="exit">N/A</span></p>
+    <p>Send: <span id="send">N/A</span></p>
+    <p>Receive: <span id="receive">N/A</span></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{application, epl_3d,
+ [
+  {description, "Erlang Performance Lab plugin for 3D visualization"},
+  {vsn, "0.1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []},
+  {mod, {epl_3d_app, []}}
+ ]}.
