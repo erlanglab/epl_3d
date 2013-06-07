@@ -34,13 +34,31 @@ init({tcp, http}, _Req, _Opts) ->
 websocket_init(_TransportName, Req, _Opts) ->
     {ok, Req, undefined_state}.
 
-websocket_handle(_Data, Req, State) ->
-    {ok, Req, State}.
+websocket_handle({text, Id}, Req, State) ->
+    NodeId = binary_to_list(Id),
+    case catch list_to_pid(NodeId) of
+        {'EXIT',{badarg,_}} ->
+            JSON = epl:proplist_to_json([{status,
+                                          "Ports are not supported yet."}]),
+            {reply, {text, JSON}, Req, State};
+        Pid ->
+            ProcessInfo = case epl_3d:trace_pid(Pid) of
+                              {ok, undefined} ->
+                                  [{pid, Pid},
+                                   {status, exited}];
+                              {ok, PI} ->
+                                  [{pid, Pid} | PI]
+                          end,
+            JSON = epl:proplist_to_json(ProcessInfo),
+            {reply, {text, JSON}, Req, State}
+    end;
+websocket_handle(Data, _Req, _State) ->
+    exit({not_implemented, Data}).
 
 websocket_info({data, Data}, Req, State) ->
     {reply, {text, Data}, Req, State};
-websocket_info(_Info, Req, State) ->
-    {ok, Req, State}.
+websocket_info(Info, _Req, _State) ->
+    exit({not_implemented, Info}).
 
 websocket_terminate(_Reason, _Req, _State) ->
     epl_3d:unsubscribe(),

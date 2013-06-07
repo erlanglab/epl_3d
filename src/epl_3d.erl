@@ -11,7 +11,8 @@
 %% API
 -export([start_link/0,
          subscribe/0,
-         unsubscribe/0]).
+         unsubscribe/0,
+         trace_pid/1]).
 
 %% gen_server callbacks
 -export([init/1,
@@ -22,8 +23,6 @@
          code_change/3]).
 
 -record(state, {subscribers = []}).
-
--define(POLL, 5000).
 
 %% ===================================================================
 %% API functions
@@ -37,6 +36,9 @@ subscribe() ->
 unsubscribe() ->
     gen_server:cast(?MODULE, {unsubscribe, self()}).
 
+trace_pid(Pid) ->
+    gen_server:call(?MODULE, {trace_pid, Pid}).
+
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
@@ -44,13 +46,17 @@ init(no_args) ->
     ok = epl:subscribe(),
     {ok, #state{}}.
 
+handle_call({trace_pid, Pid}, _From, State) ->
+    ok = epl:trace_pid(Pid),
+    {ok, ProcessInfo} = epl:process_info(Pid),
+    {reply, {ok, ProcessInfo}, State};
 handle_call(Request, _From, _State) ->
     exit({not_implemented, Request}).
 
 handle_cast({subscribe, Pid}, State = #state{subscribers = Subs}) ->
-    {noreply, State#state{subscribers = [Pid|Subs]}, ?POLL};
+    {noreply, State#state{subscribers = [Pid|Subs]}};
 handle_cast({unsubscribe, Pid}, State = #state{subscribers = Subs}) ->
-    {noreply, State#state{subscribers = lists:delete(Pid, Subs)}, ?POLL};
+    {noreply, State#state{subscribers = lists:delete(Pid, Subs)}};
 handle_cast(Request, _State) ->
     exit({not_implemented, Request}).
 
@@ -105,12 +111,14 @@ handle_info({data, {N, T}, Proplist}, State = #state{subscribers = Subs}) ->
                              {<<"c">>, epl:to_bin(Count)},
                              {<<"s">>, epl:to_bin(Size)}]
                             || {P, Count, Size} <- Receive]};
+                     ({trace, _Trace}) ->
+                          %% TODO: process trace messages
+                          {trace, []};
                      (Item) ->
                           Item
                   end,
                   Proplist1),
 
-    %% JSON = epl:encode_to_json(Proplist2),
     JSON = ej:encode(Proplist2),
 
     [Pid ! {data, JSON} || Pid <- Subs],

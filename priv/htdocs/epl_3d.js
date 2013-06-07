@@ -16,10 +16,10 @@ $(document).ready(function() {
                 window.location.port+"/epl_3d_EPL";
             try{
                 socket = new WebSocket(host);
-                message(socket.readyState + ' (new)');
+                message(socket.readyState + ' (WebSocekt new)');
 
 	        socket.onopen = function(){
-	            message(socket.readyState + ' (open)');
+	            message(socket.readyState + ' (WebSocket open)');
 	        }
 
 	        socket.onmessage = function(msg){
@@ -27,7 +27,7 @@ $(document).ready(function() {
 
                     if(d.spawn  != undefined) {
                         d.spawn.forEach(function(item) {
-                            VE.setNode(item.id, {size:2});
+                            VE.setNode(item.id, {size:3});
                         });
 
                         $('#spawn').text(d.spawn.length);
@@ -52,10 +52,16 @@ $(document).ready(function() {
                         });
                         $('#receive').text(d.receive.length);
                     };
+
+                    if(d.status != undefined) {
+                        $('#process_info').html("<pre>"+
+                                                JSON.stringify(d, undefined, 2)
+                                                +"</pre>");
+                    };
                 }
 
 	        socket.onclose = function(){
-	            message(socket.readyState + ' (closed)');
+	            message(socket.readyState + ' (WebSocket closed)');
 	        }
 
 	    } catch(exception){
@@ -72,9 +78,10 @@ $(document).ready(function() {
 
     connect();
 
-    VE.initialize('container');
+    VE.initialize('container', { transparency: false });
     VE.onNodeSelect = function onSelect(nodeId) {
-        alert(nodeId);
+        console.log(nodeId);
+        socket.send(nodeId);
     }
 
 });
