@@ -4,7 +4,7 @@ $(document).ready(function() {
     if(!("WebSocket" in window)) {
         $('<p>Oh no, you need a browser that supports WebSockets.'+
           'How about <a href="http://www.getfirefox.com/">Mozilla Firefox</a>?'+
-          '</p>').appendTo('#container');
+          '</p>').appendTo('#epl_3d');
     } else {
         //
         //The user has WebSockets
@@ -14,41 +14,53 @@ $(document).ready(function() {
                 window.location.port+"/epl_3d_EPL";
             try{
                 socket = new WebSocket(host);
-                message(socket.readyState + ' (WebSocekt new)');
+                message('3D WebSocekt: new');
 
 	        socket.onopen = function(){
-	            message(socket.readyState + ' (WebSocket open)');
+	            message('3D WebSocekt: open');
 	        }
 
 	        socket.onmessage = function(msg){
                     d = JSON.parse(msg.data);
 
+                    var default_node = {size:3,
+                                        color: 0x77bbFF,
+                                        opacity: 0.5};
+                    var default_edge = { sizeS: 0.9,
+                                         sizeT: 0.9,
+                                         color: 0x888888,
+                                         opacity: 1 };
+
                     if(d.spawn  != undefined) {
                         d.spawn.forEach(function(item) {
-                            VE.setNode(item.id, {size:3});
+                            VE.setNode(item.id, default_node);
                         });
-
                         $('#spawn').text(d.spawn.length);
-                    };
-
-                    if(d.exit  != undefined) {
-                        $('#exit').text(d.exit.length);
                     };
 
                     if(d.send  != undefined) {
                         d.send.forEach(function(item) {
-                            VE.setNode(item.v1, {size:3});
-                            VE.setNode(item.v2, {size:3});
-                            VE.setEdge(item.v1, item.v2, { });
+                            VE.setNode(item.v1, default_node);
+                            VE.setNode(item.v2, default_node);
+                            VE.setEdge(item.v1, item.v2, default_edge);
                         });
                         $('#send').text(d.send.length);
                     };
 
                     if(d.receive != undefined) {
                         d.receive.forEach(function(item) {
-                            //VE.setNode(item.id, {size: Math.log(item.s) });
+                            VE.setNode(item.id, {size: Math.log(item.c+1),
+                                                 color: 0xFF7777,
+                                                 opacity: 0.8 });
                         });
                         $('#receive').text(d.receive.length);
+                    };
+
+                    if(d.exit  != undefined) {
+                        d.exit.forEach(function(item) {
+                            VE.setNode(item.id, default_node);
+                        });
+                        $('#exit').text(d.exit.length);
                     };
 
                     if(d.status != undefined) {
@@ -59,7 +71,7 @@ $(document).ready(function() {
                 }
 
 	        socket.onclose = function(){
-	            message(socket.readyState + ' (WebSocket closed)');
+	            message('3D WebSocekt: closed');
 	        }
 
 	    } catch(exception){
@@ -79,6 +91,7 @@ $(document).ready(function() {
     VE.initialize('epl_3d', { transparency: true });
     VE.onNodeSelect = function onSelect(nodeId) {
         console.log(nodeId);
+        VE.focusNode(nodeId);
         socket.send(nodeId);
     }
 
