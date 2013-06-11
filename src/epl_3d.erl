@@ -62,12 +62,6 @@ handle_cast(Request, _State) ->
 
 
 handle_info({data, {N, T}, Proplist}, State = #state{subscribers = Subs}) ->
-    %%  {send,[{{#Port<5984.431>,<5984.28.0>},0,8},
-    %%         {{<5984.28.0>,<5984.30.0>},2,6}]},
-    %%  {send_self,[]},
-    %%  {receive,[{<5984.28.0>,8,314},
-    %%             {<5984.30.0>,2,24}]}]
-
     Id = << (epl:to_bin(N))/binary, $:, (epl:timestamp(T))/binary >>,
     Proplist1 = [{id, Id} | Proplist],
     Proplist2 =

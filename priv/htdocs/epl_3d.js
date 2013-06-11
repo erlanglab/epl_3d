@@ -1,5 +1,3 @@
-var nodeCounter = 0;
-
 $(document).ready(function() {
     var socket;
 
@@ -78,7 +76,7 @@ $(document).ready(function() {
 
     connect();
 
-    VE.initialize('container', { transparency: false });
+    VE.initialize('epl_3d', { transparency: true });
     VE.onNodeSelect = function onSelect(nodeId) {
         console.log(nodeId);
         socket.send(nodeId);

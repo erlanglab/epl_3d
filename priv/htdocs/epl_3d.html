@@ -1,34 +1,36 @@
 <html>
 <head>
-  <title>Erlang Performance Lab 3D</title>
+  <title>Erlang Performance Lab - 3D</title>
+</head>
+<body>
+<!--  <script src="/epl_3d/ve/js/jquery-2.0.0.js"></script> -->
 
-  <script src="ve/js/jquery-2.0.0.js"></script>
+  <script src="/epl_3d/ve/js/Three.js"></script>
+  <script src="/epl_3d/ve/js/TrackballControls.js"></script>
+  <script src="/epl_3d/ve/js/effects/AnaglyphEffect.js"></script>
+  <script src="/epl_3d/ve/js/effects/GrayAnaglyphEffect.js"></script>
 
-  <script src="ve/js/Three.js"></script>
-  <script src="ve/js/TrackballControls.js"></script>
-  <script src="ve/js/effects/AnaglyphEffect.js"></script>
-  <script src="ve/js/effects/GrayAnaglyphEffect.js"></script>
+  <script src="/epl_3d/ve/js/Graph.js"></script>
+  <script src="/epl_3d/ve/js/force-directed-layout.js"></script>
 
-  <script src="ve/js/Graph.js"></script>
-  <script src="ve/js/force-directed-layout.js"></script>
-
-  <script src="ve/js/VisualEyes.js"></script>
+  <script src="/epl_3d/ve/js/VisualEyes.js"></script>
 
   <!-- Erlang Performance Lab plugin-->
-  <script src="epl_3d.js"></script>
+  <script src="/epl_3d/epl_3d.js"></script>
 
-</head>
-<body style="margin-top: 10px; margin-bottom: 0px; margin-left: 10px; margin-right: 0px; padding: 0;">
   <div id="main">
-    <div id="container" style="width: 60%; height: 80%; float: left;"></div>
-    <div id="process_info" style="margin-left: 65%">Process info: N/A</div>
     <div style="clear:both">
-      <button onmousedown="VE.changeEffect()">Change render effect</button>
-      <p>Spawn: <span id="spawn">N/A</span>
-        Exit: <span id="exit">N/A</span>
+    </div>
+    <div id="epl_3d" style="width: 60%; height: 400px; float: left;"></div>
+    <div style="margin-left: 65%">
+      <div><button onmousedown="VE.changeEffect()">Toggle 3D glasses</button></div>
+
+      <div>Spawns: <span id="spawn">N/A</span>
+        Exits: <span id="exit">N/A</span>
         Send: <span id="send">N/A</span>
-        Receive: <span id="receive">N/A</span></p>
-      <p>WS status: <span id="message">N/A</span></p>
+        Receive: <span id="receive">N/A</span></div>
+
+      <div id="process_info">Process info: N/A</div>
     </div>
   </div>
 </body>

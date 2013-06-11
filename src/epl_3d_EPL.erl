@@ -8,8 +8,9 @@
 -module(epl_3d_EPL).
 -behaviour(cowboy_websocket_handler).
 
-%% EPL plugin callback
--export([start_link/1]).
+%% EPL plugin callbacks
+-export([start_link/1,
+         init/1]).
 
 %% cowboy_websocket_handler callbacks
 -export([init/3,
@@ -23,6 +24,13 @@
 %%%===================================================================
 start_link(_Options) ->
     {ok, spawn(fun() -> receive _ -> ok end end)}.
+
+init(_Options) ->
+    MenuItem = <<"<li class=\"glyphicons share_alt\">",
+                 "<a href=\"/epl_3d/epl_3d.html\"><i></i><span>3D</span></a>",
+                 "</li>">>,
+    Author = <<"Erlang Lab">>,
+    {ok, [{menu_item, MenuItem}, {author, Author}]}.
 
 %%%===================================================================
 %%% cowboy_websocket_handler callbacks
