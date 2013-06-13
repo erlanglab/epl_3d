@@ -26,6 +26,9 @@ $(document).ready(function() {
                     var default_node = {size:3,
                                         color: 0x77bbFF,
                                         opacity: 0.5};
+                    var exit_node = {size:2,
+                                     color: 0x777777,
+                                     opacity: 0.7};
                     var default_edge = { sizeS: 0.9,
                                          sizeT: 0.9,
                                          color: 0x888888,
@@ -35,7 +38,6 @@ $(document).ready(function() {
                         d.spawn.forEach(function(item) {
                             VE.setNode(item.id, default_node);
                         });
-                        $('#spawn').text(d.spawn.length);
                     };
 
                     if(d.send  != undefined) {
@@ -44,7 +46,6 @@ $(document).ready(function() {
                             VE.setNode(item.v2, default_node);
                             VE.setEdge(item.v1, item.v2, default_edge);
                         });
-                        $('#send').text(d.send.length);
                     };
 
                     if(d.receive != undefined) {
@@ -53,20 +54,16 @@ $(document).ready(function() {
                                                  color: 0xFF7777,
                                                  opacity: 0.8 });
                         });
-                        $('#receive').text(d.receive.length);
                     };
 
                     if(d.exit  != undefined) {
                         d.exit.forEach(function(item) {
-                            VE.setNode(item.id, default_node);
+                            VE.setNode(item.id, exit_node);
                         });
-                        $('#exit').text(d.exit.length);
                     };
 
                     if(d.status != undefined) {
-                        $('#process_info').html("<pre>"+
-                                                JSON.stringify(d, undefined, 2)
-                                                +"</pre>");
+                        $('#process_info').html(JSON.stringify(d, undefined, 2));
                     };
                 }
 
@@ -90,7 +87,6 @@ $(document).ready(function() {
 
     VE.initialize('epl_3d', { transparency: true });
     VE.onNodeSelect = function onSelect(nodeId) {
-        console.log(nodeId);
         VE.focusNode(nodeId);
         socket.send(nodeId);
     }

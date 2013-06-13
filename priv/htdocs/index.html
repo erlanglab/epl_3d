@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>Erlang Performance Lab - 3D</title>
+</head>
+<body>
+
+  <script src="/epl_3d/ve/js/Three.js"></script>
+  <script src="/epl_3d/ve/js/TrackballControls.js"></script>
+  <script src="/epl_3d/ve/js/effects/AnaglyphEffect.js"></script>
+  <script src="/epl_3d/ve/js/effects/GrayAnaglyphEffect.js"></script>
+
+  <script src="/epl_3d/ve/js/Graph.js"></script>
+  <script src="/epl_3d/ve/js/force-directed-layout.js"></script>
+
+  <script src="/epl_3d/ve/js/VisualEyes.js"></script>
+
+  <!-- Erlang Performance Lab plugin-->
+  <script src="/epl_3d/epl_3d.js"></script>
+
+  <div id="main">
+    <div style="clear:both"> </div>
+    <div id="epl_3d" style="width: 60%; height: 500px; float: left;"></div>
+    <div style="margin-left: 65%">
+      <p><a class="glyphicons scuba_diving" href="/epl_3d/epl_3d.html" target="_blank"><i></i><span>Put on 3D glasses and click here</span></a></p>
+
+      <pre id="process_info">
+Wait until you see bubbles on the left.
+They represent Erlang processes.
+
+Click on one of the bubbles to get
+erlang:process_info/1
+and to focus camera on it.
+
+Click-and-hold to rotate camera.
+
+Scroll to zoom in and zoom out.
+</pre>
+  </div>
+</body>
+</html>

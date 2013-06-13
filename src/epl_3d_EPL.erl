@@ -27,7 +27,7 @@ start_link(_Options) ->
 
 init(_Options) ->
     MenuItem = <<"<li class=\"glyphicons share_alt\">",
-                 "<a href=\"/epl_3d/epl_3d.html\"><i></i><span>3D</span></a>",
+                 "<a href=\"/epl_3d/index.html\"><i></i><span>3D</span></a>",
                  "</li>">>,
     Author = <<"Erlang Lab">>,
     {ok, [{menu_item, MenuItem}, {author, Author}]}.
