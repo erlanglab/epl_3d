@@ -62,8 +62,8 @@ $(document).ready(function() {
                         });
                     };
 
-                    if(d.status != undefined) {
-                        $('#process_info').html(JSON.stringify(d, undefined, 2));
+                    if(d.topic === "process-info") {
+                        $('#process_info').html(JSON.stringify(d.data, undefined, 2));
                     };
                 }
 
