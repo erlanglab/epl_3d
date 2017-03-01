@@ -47,7 +47,8 @@ websocket_handle({text, Id}, Req, State) ->
     case catch list_to_pid(NodeId) of
         {'EXIT',{badarg,_}} ->
             JSON = epl:proplist_to_json([{status,
-                                          "Ports are not supported yet."}]),
+                                          "Ports are not supported yet."}],
+                                       <<"process-info">>),
             {reply, {text, JSON}, Req, State};
         Pid ->
             ProcessInfo = case epl_3d:trace_pid(Pid) of
@@ -57,7 +58,7 @@ websocket_handle({text, Id}, Req, State) ->
                               {ok, PI} ->
                                   [{pid, Pid} | PI]
                           end,
-            JSON = epl:proplist_to_json(ProcessInfo),
+            JSON = epl:proplist_to_json(ProcessInfo, <<"process-info">>),
             {reply, {text, JSON}, Req, State}
     end;
 websocket_handle(Data, _Req, _State) ->
